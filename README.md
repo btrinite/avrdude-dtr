@@ -9,6 +9,24 @@ as if your serial cable actually had a dtr pin.
 Instructions:
 -------------
 
+* Install arduino-cli
+
+curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+
+* Add 'bin' created directory to your PATH,
+
+nano ~/.bashrc
+export PATH=$PATH:/home/pi/bin
+
+* Initialize arduino-cli 
+
+arduino-cli config init
+arduino-cli core update-index
+
+* install board support
+
+arduino-cli core install arduino:avr
+ 
 Copy both files into your /usr/bin directory, then rename the original avrdude to avrdude-original
 and symlink avrdude-autoreset to become avrdude.
 
