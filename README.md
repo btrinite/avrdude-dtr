@@ -9,6 +9,9 @@ as if your serial cable actually had a dtr pin.
 Instructions:
 -------------
 
+sudo apt-get install strace
+sudo apt-get install curl
+
 * Install arduino-cli
 
 curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
@@ -26,20 +29,16 @@ arduino-cli core update-index
 * install board support
 
 arduino-cli core install arduino:avr
- 
-Copy both files into your /usr/bin directory, then rename the original avrdude to avrdude-original
-and symlink avrdude-autoreset to become avrdude.
 
-    cp autoreset /usr/bin
-    cp avrdude-autoreset /usr/bin
-    mv /usr/bin/avrdude /usr/bin/avrdude-original
-    ln -s /usr/bin/avrdude-autoreset /usr/bin/avrdude
+* install avrdude trick 
 
-Modify the autoreset script to use the pin that you wired up to the reset pin.  See the line in
-autoreset where we do "pin = 11" and change the 11 to your gpio pin number.
+cp autoreset /usr/bin
+cp avrdude-autoreset /usr/bin
+sudo mv ~/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude ~/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude-original
+sudo ln -s ~/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude-original /usr/bin/avrdude-original
+sudo ln -s /usr/bin/avrdude-autoreset ~/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude
 
-Now when you run avrdude from anywhere (including via arduino's normal UI) it will flag dtr when
-it is about to upload hex data.
+* install Hat source code and dep
 
 cd project
 git clone https://github.com/btrinite/robocars_hat.git
@@ -47,7 +46,15 @@ mv robocars_hat RobocarsHat
 arduino-cli lib install PololuLedStrip
 
 cd ~/Arduino/libraries/
-git clone https://github.com/btrinite/Servo.git
+git clone https://github.com/PaulStoffregen/PWMServo
 git clone https://github.com/ElectricRCAircraftGuy/eRCaGuy_TimerCounter.git
 
+* compile
+
+
 arduino-cli compile -b arduino:avr:mini /home/btrinite/projects/RobocarsHat/
+
+* upload sketch
+
+
+arduino-cli upload -p /dev/ttyTHS1 --fqbn  arduino:avr:mini /home/btrinite/projects/RobocarsHat/
