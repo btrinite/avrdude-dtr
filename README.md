@@ -40,3 +40,14 @@ autoreset where we do "pin = 11" and change the 11 to your gpio pin number.
 
 Now when you run avrdude from anywhere (including via arduino's normal UI) it will flag dtr when
 it is about to upload hex data.
+
+cd project
+git clone https://github.com/btrinite/robocars_hat.git
+mv robocars_hat RobocarsHat
+arduino-cli lib install PololuLedStrip
+
+cd ~/Arduino/libraries/
+git clone https://github.com/btrinite/Servo.git
+git clone https://github.com/ElectricRCAircraftGuy/eRCaGuy_TimerCounter.git
+
+arduino-cli compile -b arduino:avr:mini /home/btrinite/projects/RobocarsHat/
